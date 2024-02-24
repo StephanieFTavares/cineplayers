@@ -1,8 +1,10 @@
 ﻿using CinePlayers.Data;
 using CinePlayers.Models;
 using CinePlayers.ViewModels;
+using CinePlayers.ViewModels.Filmes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace CinePlayers.Controllers
 {
@@ -46,6 +48,25 @@ namespace CinePlayers.Controllers
             catch (Exception)
             {
                 return StatusCode(500, new ResultViewModel<List<Filme>>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync(CreateFilmeViewModel model)
+        {
+            try
+            {
+                var filme = new Filme(model.Nome, model.Elenco, model.Diretor, model.Duracao, model.AnoDeLancamento,
+                    model.Sinopse, model.AvaliacaoDosCriticos, model.AvaliacaoDosUsuarios);
+
+                await _context.Filmes.AddAsync(filme);
+                await _context.SaveChangesAsync();
+
+                return Created($"Filme/{filme.Id}", new ResultViewModel<Filme>(filme));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<Filme>("Falha interna no servidor"));
             }
         }
     }
