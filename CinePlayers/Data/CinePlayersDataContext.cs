@@ -11,10 +11,12 @@ namespace CinePlayers.Data
         }
 
         public DbSet<Filme> Filmes { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FilmeMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
     }
 }

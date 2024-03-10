@@ -2,7 +2,7 @@
 
 namespace CinePlayers.ViewModels.Filmes
 {
-    public class CreateFilmeViewModel
+    public class UpdateFilmeViewModel
     {
         public string Nome { get; set; }
         public string Elenco { get; set; }

@@ -35,6 +35,9 @@ namespace CinePlayers.Data.Mappings
 
             builder.Property(x => x.AvaliacaoDosUsuarios)
                 .IsRequired();
+
+            builder.Property(x => x.Tag)
+                .IsRequired();
         }
     }
 }
