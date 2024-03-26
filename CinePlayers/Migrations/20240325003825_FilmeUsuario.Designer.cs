@@ -4,6 +4,7 @@ using CinePlayers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinePlayers.Migrations
 {
     [DbContext(typeof(CinePlayersDataContext))]
-    partial class CinePlayersDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240325003825_FilmeUsuario")]
+    partial class FilmeUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,7 +102,7 @@ namespace CinePlayers.Migrations
                     b.ToTable("Usuario", (string)null);
                 });
 
-            modelBuilder.Entity("FilmesCurtidos", b =>
+            modelBuilder.Entity("ListaFavoritos", b =>
                 {
                     b.Property<Guid>("FilmeId")
                         .HasColumnType("uniqueidentifier");
@@ -111,56 +114,24 @@ namespace CinePlayers.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("FilmesCurtidos", (string)null);
+                    b.ToTable("ListaFavoritos");
                 });
 
-            modelBuilder.Entity("FilmesFavoritos", b =>
-                {
-                    b.Property<Guid>("FilmeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("FilmeId", "UsuarioId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("FilmesFavoritos", (string)null);
-                });
-
-            modelBuilder.Entity("FilmesCurtidos", b =>
+            modelBuilder.Entity("ListaFavoritos", b =>
                 {
                     b.HasOne("CinePlayers.Models.Filme", null)
                         .WithMany()
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_FilmesCurtidos_FilmeId");
+                        .HasConstraintName("FK_ListaFavoritos_FilmeId");
 
                     b.HasOne("CinePlayers.Models.Usuario", null)
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_FilmesCurtidos_UsuarioId");
-                });
-
-            modelBuilder.Entity("FilmesFavoritos", b =>
-                {
-                    b.HasOne("CinePlayers.Models.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("FilmeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmesFavoritos_FilmeId");
-
-                    b.HasOne("CinePlayers.Models.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_FilmesFavoritos_UsuarioId");
+                        .HasConstraintName("FK_ListaFavoritos_UsuarioId");
                 });
 #pragma warning restore 612, 618
         }

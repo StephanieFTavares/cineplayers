@@ -13,6 +13,8 @@ namespace CinePlayers.Models
             Cpf = cpf;
             DataNascimento = dataNascimento;
             Mtb = mtb;
+            FilmesFavoritos = new List<Filme>();
+            FilmesCurtidos = new List<Filme>();
         }
 
         public Guid Id { get; private set; }
@@ -22,6 +24,8 @@ namespace CinePlayers.Models
         public string Cpf { get; private set; }
         public DateTime DataNascimento { get; private set; }
         public string? Mtb { get; set; }
+        public List<Filme> FilmesFavoritos { get; private set; }
+        public List<Filme> FilmesCurtidos { get; private set; }
 
         public void Alterar(UpdateUsuarioViewModel model)
         {

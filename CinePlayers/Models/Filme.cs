@@ -1,4 +1,5 @@
-﻿using CinePlayers.Enums;
+﻿using System.Net;
+using CinePlayers.Enums;
 using CinePlayers.ViewModels.Filmes;
 
 namespace CinePlayers.Models
@@ -17,6 +18,8 @@ namespace CinePlayers.Models
             AvaliacaoDosCriticos = avaliacaoDosCriticos;
             AvaliacaoDosUsuarios = avaliacaoDosUsuarios;
             Tag = tag;
+            UsuariosQueFavoritaram = new List<Usuario>();
+            UsuariosQueCurtiram = new List<Usuario>();
         }
 
         public Guid Id { get; private set; }
@@ -29,6 +32,8 @@ namespace CinePlayers.Models
         public double AvaliacaoDosCriticos { get; private set; }
         public double AvaliacaoDosUsuarios { get; private set; }
         public ETagFilme Tag { get; private set; }
+        public List<Usuario> UsuariosQueFavoritaram { get; private set; }
+        public List<Usuario> UsuariosQueCurtiram { get; private set; }
 
         public void Alterar(UpdateFilmeViewModel model)
         {
