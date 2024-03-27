@@ -19,7 +19,7 @@ namespace CinePlayers.Models
             AvaliacaoDosUsuarios = avaliacaoDosUsuarios;
             Tag = tag;
             UsuariosQueFavoritaram = new List<Usuario>();
-            UsuariosQueCurtiram = new List<Usuario>();
+            UsuariosQueReagiram = new List<ReacoesFilmes>();
         }
 
         public Guid Id { get; private set; }
@@ -33,7 +33,7 @@ namespace CinePlayers.Models
         public double AvaliacaoDosUsuarios { get; private set; }
         public ETagFilme Tag { get; private set; }
         public List<Usuario> UsuariosQueFavoritaram { get; private set; }
-        public List<Usuario> UsuariosQueCurtiram { get; private set; }
+        public List<ReacoesFilmes> UsuariosQueReagiram { get; private set; }
 
         public void Alterar(UpdateFilmeViewModel model)
         {

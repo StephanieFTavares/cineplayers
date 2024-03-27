@@ -1,4 +1,5 @@
 ﻿using CinePlayers.Data;
+using CinePlayers.Enums;
 using CinePlayers.Models;
 using CinePlayers.ViewModels;
 using CinePlayers.ViewModels.Usuarios;
@@ -23,8 +24,7 @@ namespace CinePlayers.Controllers
         {
             try
             {
-                var usuarios = await _context.Usuarios.Include(u => u.FilmesFavoritos)
-                    .Include(u => u.FilmesCurtidos).ToListAsync();
+                var usuarios = await _context.Usuarios.Include(u => u.FilmesFavoritos).ToListAsync();
                 return Ok(new ResultViewModel<List<Usuario>>(usuarios));
             }
             catch (Exception)

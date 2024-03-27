@@ -4,6 +4,7 @@ using CinePlayers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinePlayers.Migrations
 {
     [DbContext(typeof(CinePlayersDataContext))]
-    partial class CinePlayersDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240326234235_Reacoes")]
+    partial class Reacoes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,20 +74,10 @@ namespace CinePlayers.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FilmeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Reacoes")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("FilmeId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Reacoes", (string)null);
                 });
@@ -123,6 +116,21 @@ namespace CinePlayers.Migrations
                     b.ToTable("Usuario", (string)null);
                 });
 
+            modelBuilder.Entity("FilmeReacoesFilmes", b =>
+                {
+                    b.Property<Guid>("FilmesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsuariosQueReagiramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("FilmesId", "UsuariosQueReagiramId");
+
+                    b.HasIndex("UsuariosQueReagiramId");
+
+                    b.ToTable("FilmeReacoesFilmes");
+                });
+
             modelBuilder.Entity("FilmesFavoritos", b =>
                 {
                     b.Property<Guid>("FilmeId")
@@ -138,23 +146,34 @@ namespace CinePlayers.Migrations
                     b.ToTable("FilmesFavoritos");
                 });
 
-            modelBuilder.Entity("CinePlayers.Models.ReacoesFilmes", b =>
+            modelBuilder.Entity("ReacoesFilmesUsuario", b =>
                 {
-                    b.HasOne("CinePlayers.Models.Filme", "Filme")
-                        .WithMany("UsuariosQueReagiram")
-                        .HasForeignKey("FilmeId")
+                    b.Property<Guid>("FilmesReagidosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsuariosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("FilmesReagidosId", "UsuariosId");
+
+                    b.HasIndex("UsuariosId");
+
+                    b.ToTable("ReacoesFilmesUsuario");
+                });
+
+            modelBuilder.Entity("FilmeReacoesFilmes", b =>
+                {
+                    b.HasOne("CinePlayers.Models.Filme", null)
+                        .WithMany()
+                        .HasForeignKey("FilmesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CinePlayers.Models.Usuario", "Usuario")
-                        .WithMany("FilmesReagidos")
-                        .HasForeignKey("UsuarioId")
+                    b.HasOne("CinePlayers.Models.ReacoesFilmes", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosQueReagiramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Filme");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("FilmesFavoritos", b =>
@@ -174,14 +193,19 @@ namespace CinePlayers.Migrations
                         .HasConstraintName("FK_FilmesFavoritos_UsuarioId");
                 });
 
-            modelBuilder.Entity("CinePlayers.Models.Filme", b =>
+            modelBuilder.Entity("ReacoesFilmesUsuario", b =>
                 {
-                    b.Navigation("UsuariosQueReagiram");
-                });
+                    b.HasOne("CinePlayers.Models.ReacoesFilmes", null)
+                        .WithMany()
+                        .HasForeignKey("FilmesReagidosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("CinePlayers.Models.Usuario", b =>
-                {
-                    b.Navigation("FilmesReagidos");
+                    b.HasOne("CinePlayers.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

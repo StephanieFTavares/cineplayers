@@ -46,22 +46,6 @@ namespace CinePlayers.Data.Mappings
                         .HasForeignKey("UsuarioId")
                         .HasConstraintName("FK_FilmesFavoritos_UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade));
-
-            builder
-                .HasMany(x => x.FilmesCurtidos)
-                .WithMany(x => x.UsuariosQueCurtiram)
-                .UsingEntity<Dictionary<string, object>>(
-                    "FilmesCurtidos",
-                    filme => filme.HasOne<Filme>()
-                        .WithMany()
-                        .HasForeignKey("FilmeId")
-                        .HasConstraintName("FK_FilmesCurtidos_FilmeId")
-                        .OnDelete(DeleteBehavior.Cascade),
-                    usuario => usuario.HasOne<Usuario>()
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .HasConstraintName("FK_FilmesCurtidos_UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade));
         }
     }
 }

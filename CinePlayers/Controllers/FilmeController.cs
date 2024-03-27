@@ -1,4 +1,5 @@
 ﻿using CinePlayers.Data;
+using CinePlayers.Enums;
 using CinePlayers.Models;
 using CinePlayers.ViewModels;
 using CinePlayers.ViewModels.Filmes;
@@ -106,6 +107,40 @@ namespace CinePlayers.Controllers
                 await _context.SaveChangesAsync();
 
                 return Ok(new ResultViewModel<Filme>(filme));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<Filme>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpPost("{idFilme}/Reagir/{idUsuario}")]
+        public async Task<IActionResult> ReactionToMovieAsync(Guid idFilme, Guid idUsuario, EReacoesFilme tipoReacao)
+        {
+            try
+            {
+                var usuario = await _context
+                    .Usuarios
+                    .Include(x => x.FilmesFavoritos)
+                    .Include(x => x.FilmesReagidos)
+                    .FirstOrDefaultAsync(x => x.Id == idUsuario);
+
+                var filme = await _context.Filmes.FirstOrDefaultAsync(x => x.Id == idFilme);
+
+                if (usuario is null || filme is null)
+                    return NotFound(new ResultViewModel<Usuario>("Conteudo não encontrado"));
+
+                var reacaoExistente = usuario.FilmesReagidos.FirstOrDefault(x => x.Filme.Id == filme.Id);
+
+                if (reacaoExistente is not null)
+                    _context.ReacoesFilmes.Remove(reacaoExistente);
+
+                var reacao = new ReacoesFilmes(usuario, filme, tipoReacao);
+
+                await _context.ReacoesFilmes.AddAsync(reacao);
+                await _context.SaveChangesAsync();
+
+                return Ok(new ResultViewModel<string>($"{filme.Nome} reagido com sucesso", null));
             }
             catch (Exception)
             {
