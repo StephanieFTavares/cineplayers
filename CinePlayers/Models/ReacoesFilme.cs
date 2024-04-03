@@ -2,11 +2,11 @@
 
 namespace CinePlayers.Models
 {
-    public class ReacoesFilmes
+    public class ReacoesFilme
     {
-        protected ReacoesFilmes() {}
+        protected ReacoesFilme() {}
 
-        public ReacoesFilmes(Usuario usuario, Filme filme, EReacoesFilme reacoes)
+        public ReacoesFilme(Usuario usuario, Filme filme, EReacoesFilme reacoes)
         {
             Id = Guid.NewGuid();
             Usuario = usuario;

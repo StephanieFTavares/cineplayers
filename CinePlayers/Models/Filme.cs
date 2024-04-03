@@ -19,7 +19,7 @@ namespace CinePlayers.Models
             AvaliacaoDosUsuarios = avaliacaoDosUsuarios;
             Tag = tag;
             UsuariosQueFavoritaram = new List<Usuario>();
-            UsuariosQueReagiram = new List<ReacoesFilmes>();
+            UsuariosQueReagiram = new List<ReacoesFilme>();
         }
 
         public Guid Id { get; private set; }
@@ -33,7 +33,7 @@ namespace CinePlayers.Models
         public double AvaliacaoDosUsuarios { get; private set; }
         public ETagFilme Tag { get; private set; }
         public List<Usuario> UsuariosQueFavoritaram { get; private set; }
-        public List<ReacoesFilmes> UsuariosQueReagiram { get; private set; }
+        public List<ReacoesFilme> UsuariosQueReagiram { get; private set; }
 
         public void Alterar(UpdateFilmeViewModel model)
         {
@@ -46,6 +46,16 @@ namespace CinePlayers.Models
             AvaliacaoDosCriticos = model.AvaliacaoDosCriticos;
             AvaliacaoDosUsuarios = model.AvaliacaoDosUsuarios;
             Tag = model.Tag;
+        }
+
+        public void AtualizarAvaliacaoDosUsuarios(int likes, int dislikes)
+        {
+            if (likes + dislikes > 0)
+            {
+                int total = likes + dislikes;
+                double satisfactionPercentage = ((double)likes / total) * 100;
+                AvaliacaoDosUsuarios = Math.Round(satisfactionPercentage, 2);
+            }
         }
     }
 }

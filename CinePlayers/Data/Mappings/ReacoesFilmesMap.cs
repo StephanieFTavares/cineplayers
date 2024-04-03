@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CinePlayers.Data.Mappings
 {
-    public class ReacoesFilmesMap : IEntityTypeConfiguration<ReacoesFilmes>
+    public class ReacoesFilmesMap : IEntityTypeConfiguration<ReacoesFilme>
     {
-        public void Configure(EntityTypeBuilder<ReacoesFilmes> builder)
+        public void Configure(EntityTypeBuilder<ReacoesFilme> builder)
         {
-            builder.ToTable("Reacoes");
+            builder.ToTable("FilmesReacoes");
 
             builder.HasKey(x => x.Id);
 

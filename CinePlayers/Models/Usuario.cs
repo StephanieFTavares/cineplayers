@@ -14,7 +14,7 @@ namespace CinePlayers.Models
             DataNascimento = dataNascimento;
             Mtb = mtb;
             FilmesFavoritos = new List<Filme>();
-            FilmesReagidos = new List<ReacoesFilmes>();
+            FilmesReagidos = new List<ReacoesFilme>();
         }
 
         public Guid Id { get; private set; }
@@ -25,7 +25,7 @@ namespace CinePlayers.Models
         public DateTime DataNascimento { get; private set; }
         public string? Mtb { get; set; }
         public List<Filme> FilmesFavoritos { get; private set; }
-        public List<ReacoesFilmes> FilmesReagidos { get; private set; }
+        public List<ReacoesFilme> FilmesReagidos { get; private set; }
 
         public void Alterar(UpdateUsuarioViewModel model)
         {

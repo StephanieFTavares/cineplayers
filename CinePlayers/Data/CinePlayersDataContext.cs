@@ -12,7 +12,7 @@ namespace CinePlayers.Data
 
         public DbSet<Filme> Filmes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<ReacoesFilmes> ReacoesFilmes { get; set; }
+        public DbSet<ReacoesFilme> ReacoesFilmes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
