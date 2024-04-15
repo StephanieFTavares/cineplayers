@@ -1,5 +1,4 @@
 ﻿using CinePlayers.Data;
-using CinePlayers.Enums;
 using CinePlayers.Models;
 using CinePlayers.ViewModels;
 using CinePlayers.ViewModels.Usuarios;
@@ -113,7 +112,7 @@ namespace CinePlayers.Controllers
             }
         }
 
-        [HttpPost("{idUsuario}/GerenciarFilmesFavoritos/{idFilme}")]
+        [HttpPost("GerenciarFilmesFavoritos")]
         public async Task<IActionResult> ManageFavoriteMovieAsync(Guid idUsuario, Guid idFilme)
         {
             try
@@ -142,7 +141,7 @@ namespace CinePlayers.Controllers
             }
         }
 
-        [HttpGet("{idUsuario}/BuscarFilmesFavoritos")]
+        [HttpGet("BuscarFilmesFavoritos")]
         public async Task<IActionResult> GetFavoriteMoviesAsync(Guid idUsuario)
         {
             try

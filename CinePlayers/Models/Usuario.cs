@@ -26,6 +26,7 @@ namespace CinePlayers.Models
         public string? Mtb { get; set; }
         public List<Filme> FilmesFavoritos { get; private set; }
         public List<ReacoesFilme> FilmesReagidos { get; private set; }
+        public List<AvaliacoesFilme> FilmesAvaliados { get; private set; }
 
         public void Alterar(UpdateUsuarioViewModel model)
         {

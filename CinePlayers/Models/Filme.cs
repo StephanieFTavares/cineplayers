@@ -1,5 +1,4 @@
-﻿using System.Net;
-using CinePlayers.Enums;
+﻿using CinePlayers.Enums;
 using CinePlayers.ViewModels.Filmes;
 
 namespace CinePlayers.Models
@@ -34,6 +33,7 @@ namespace CinePlayers.Models
         public ETagFilme Tag { get; private set; }
         public List<Usuario> UsuariosQueFavoritaram { get; private set; }
         public List<ReacoesFilme> UsuariosQueReagiram { get; private set; }
+        public List<AvaliacoesFilme> UsuariosQueAvaliaram { get; private set; }
 
         public void Alterar(UpdateFilmeViewModel model)
         {
@@ -48,13 +48,21 @@ namespace CinePlayers.Models
             Tag = model.Tag;
         }
 
-        public void AtualizarAvaliacaoDosUsuarios(int likes, int dislikes)
+        public void AtualizarReacoesDosUsuarios(int likes, int dislikes)
         {
             if (likes + dislikes > 0)
             {
                 int total = likes + dislikes;
                 double satisfactionPercentage = ((double)likes / total) * 100;
                 AvaliacaoDosUsuarios = Math.Round(satisfactionPercentage, 2);
+            }
+        }
+
+        public void AtualizarAvaliacaoDosUsuarios(double media)
+        {
+            if (media >= 0 && media <= 10)
+            {
+                AvaliacaoDosCriticos = Math.Round(media, 2);
             }
         }
     }

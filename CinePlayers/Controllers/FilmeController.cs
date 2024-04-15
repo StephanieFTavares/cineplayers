@@ -114,7 +114,7 @@ namespace CinePlayers.Controllers
             }
         }
 
-        [HttpPost("{idFilme}/Reagir/{idUsuario}")]
+        [HttpPost("Reagir")]
         public async Task<IActionResult> ReactionToMovieAsync(Guid idFilme, Guid idUsuario, EReacoesFilme tipoReacao)
         {
             try
@@ -123,12 +123,13 @@ namespace CinePlayers.Controllers
                     .Usuarios
                     .Include(x => x.FilmesFavoritos)
                     .Include(x => x.FilmesReagidos)
+                    .Include(x => x.FilmesAvaliados)
                     .FirstOrDefaultAsync(x => x.Id == idUsuario);
 
                 var filme = await _context.Filmes.FirstOrDefaultAsync(x => x.Id == idFilme);
 
                 if (usuario is null || filme is null)
-                    return NotFound(new ResultViewModel<Usuario>("Conteudo não encontrado"));
+                    return NotFound(new ResultViewModel<Filme>("Conteudo não encontrado"));
 
                 var reacaoExistente = usuario.FilmesReagidos.FirstOrDefault(x => x.Filme.Id == filme.Id);
 
@@ -139,7 +140,7 @@ namespace CinePlayers.Controllers
 
                 await _context.ReacoesFilmes.AddAsync(reacao);
                 await _context.SaveChangesAsync();
-                await AtualizarAvaliacaoFilme(filme);
+                await AtualizarReacaoFilme(filme);
                            
                 return Ok(new ResultViewModel<string>($"{filme.Nome} reagido com sucesso", null));
             }
@@ -148,8 +149,47 @@ namespace CinePlayers.Controllers
                 return StatusCode(500, new ResultViewModel<Filme>("Falha interna no servidor"));
             }
         }
-       
-        [HttpGet("{idFilme}/BuscarReacoes")]
+
+        [HttpPost("Critico")]
+        public async Task<IActionResult> RateMovieAsync(Guid idFilme, Guid idUsuario, double nota)
+        {
+            try
+            {
+                if (!(nota >= 0 && nota <= 10))
+                    return BadRequest(new ResultViewModel<Filme>("Nota Invalida"));
+
+                var usuario = await _context
+                    .Usuarios
+                    .Include(x => x.FilmesFavoritos)
+                    .Include(x => x.FilmesReagidos)
+                    .Include(x => x.FilmesAvaliados)
+                    .FirstOrDefaultAsync(x => x.Id == idUsuario);
+
+                var filme = await _context.Filmes.FirstOrDefaultAsync(x => x.Id == idFilme);
+
+                if (usuario is null || filme is null)
+                    return NotFound(new ResultViewModel<Filme>("Conteudo não encontrado"));
+
+                var avaliacoesExistentes = usuario.FilmesAvaliados.FirstOrDefault(x => x.Filme.Id == filme.Id);
+
+                if (avaliacoesExistentes is not null)
+                    _context.AvaliacoesFilmes.Remove(avaliacoesExistentes);
+
+                var avaliacao = new AvaliacoesFilme(usuario, filme, nota);
+
+                await _context.AvaliacoesFilmes.AddAsync(avaliacao);
+                await _context.SaveChangesAsync();
+                await AtualizarAvaliacaoFilme(filme);
+
+                return Ok(new ResultViewModel<string>($"{filme.Nome} avaliado com sucesso", null));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<Filme>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpGet("BuscarReacoes")]
         public async Task<IActionResult> GetMoviesReactionAsync(Guid idFilme)
         {
             try
@@ -180,6 +220,26 @@ namespace CinePlayers.Controllers
 
         private async Task AtualizarAvaliacaoFilme(Filme filme)
         {
+            var avaliacoesDoFilme = await _context.AvaliacoesFilmes
+                .Where(x => x.Filme.Id == filme.Id)
+                .ToListAsync();
+
+            double soma = 0;
+
+            foreach (var item in avaliacoesDoFilme)
+            {
+                soma += item.Avaliacao;
+            }
+
+            double media = soma / avaliacoesDoFilme.Count;
+
+            filme.AtualizarAvaliacaoDosUsuarios(media);
+
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task AtualizarReacaoFilme(Filme filme)
+        {
             var reacoesDoFilme = await _context.ReacoesFilmes
                                 .Where(x => x.Filme.Id == filme.Id)
                                 .ToListAsync();
@@ -187,7 +247,7 @@ namespace CinePlayers.Controllers
             var likes = reacoesDoFilme.Count(x => x.Reacoes == EReacoesFilme.Like);
             var dislikes = reacoesDoFilme.Count(x => x.Reacoes == EReacoesFilme.Dislike);
 
-            filme.AtualizarAvaliacaoDosUsuarios(likes, dislikes);
+            filme.AtualizarReacoesDosUsuarios(likes, dislikes);
 
             await _context.SaveChangesAsync();
         }
