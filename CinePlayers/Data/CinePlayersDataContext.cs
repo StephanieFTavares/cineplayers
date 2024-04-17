@@ -14,6 +14,9 @@ namespace CinePlayers.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<ReacoesFilme> ReacoesFilmes { get; set; }
         public DbSet<AvaliacoesFilme> AvaliacoesFilmes { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<SalaCinema> SalaCinemas { get; set; }
+        public DbSet<Sessao> Sessoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +24,9 @@ namespace CinePlayers.Data
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new ReacoesFilmesMap());
             modelBuilder.ApplyConfiguration(new AvaliacoesFilmeMap());
+            modelBuilder.ApplyConfiguration(new ReservaMap());
+            modelBuilder.ApplyConfiguration(new SalaCinemaMap());
+            modelBuilder.ApplyConfiguration(new SessaoMap());
         }
     }
 }

@@ -15,6 +15,7 @@ namespace CinePlayers.Models
             Mtb = mtb;
             FilmesFavoritos = new List<Filme>();
             FilmesReagidos = new List<ReacoesFilme>();
+            Reservas = new List<Reserva>();
         }
 
         public Guid Id { get; private set; }
@@ -27,6 +28,7 @@ namespace CinePlayers.Models
         public List<Filme> FilmesFavoritos { get; private set; }
         public List<ReacoesFilme> FilmesReagidos { get; private set; }
         public List<AvaliacoesFilme> FilmesAvaliados { get; private set; }
+        public List<Reserva> Reservas { get; private set; }
 
         public void Alterar(UpdateUsuarioViewModel model)
         {
