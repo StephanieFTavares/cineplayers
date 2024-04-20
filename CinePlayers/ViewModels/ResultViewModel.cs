@@ -1,4 +1,6 @@
-﻿namespace CinePlayers.ViewModels
+﻿using CinePlayers.Controllers;
+
+namespace CinePlayers.ViewModels
 {
     public class ResultViewModel<T>
     {
@@ -23,7 +25,13 @@
             Errors.Add(error);
         }
 
+        public ResultViewModel(SessaoFilmeController sessaoFilme)
+        {
+            SessaoFilme = sessaoFilme;
+        }
+
         public T Data { get; private set; }
         public List<string> Errors { get; private set; } = new();
+        public SessaoFilmeController SessaoFilme { get; }
     }
 }

@@ -17,6 +17,7 @@ namespace CinePlayers.Data
         public DbSet<Reserva> Reservas { get; set; }
         public DbSet<SalaCinema> SalaCinemas { get; set; }
         public DbSet<Sessao> Sessoes { get; set; }
+        public object SessaoFilme { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
