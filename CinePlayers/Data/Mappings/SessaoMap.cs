@@ -16,12 +16,18 @@ namespace CinePlayers.Data.Mappings
                 .HasOne(x => x.Filme)
                 .WithMany(x => x.Sessoes);
 
-            builder.Property(x => x.DataHora)
+            builder.Property(x => x.DataHoraExibicao)
                 .IsRequired();
 
             builder
                 .HasMany(x => x.Reservas)
                 .WithOne(x => x.Sessao);
+
+            builder.Property(x => x.DataEntrada)
+                .IsRequired();
+
+            builder.Property(x => x.DataSaida)
+                .IsRequired();
         }
     }
 }
