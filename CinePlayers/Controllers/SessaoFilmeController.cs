@@ -160,5 +160,22 @@ namespace CinePlayers.Controllers
 
             return Created($"SessaoFilme/{sessao.Id}/reservas/{reserva.Id}", new ResultViewModel<GetReservaViewModel>(reservaViewModel));
         }
+
+        [HttpDelete("CancelarReserva")]
+        public async Task<IActionResult> CancelarReserva(Guid sessaoId, Guid reservaId)
+        {
+            var reserva = await _context.Reservas
+                .Include(x => x.Usuario)
+                .Include(r => r.Sessao)
+                .FirstOrDefaultAsync(r => r.Id == reservaId && r.Sessao.Id == sessaoId);
+
+            if (reserva is null)
+                return NotFound(new ResultViewModel<Sessao>("Reserva não encontrada."));
+
+            _context.Reservas.Remove(reserva);
+            await _context.SaveChangesAsync();
+
+            return Ok(new ResultViewModel<string>($"Reserva do assento {reserva.NumeroAssento}, do cliente {reserva.Usuario.Nome} cancelada",null));
+        }
     }
 }
