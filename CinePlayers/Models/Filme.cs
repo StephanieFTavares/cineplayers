@@ -1,11 +1,12 @@
 ﻿using CinePlayers.Enums;
 using CinePlayers.ViewModels.Filmes;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CinePlayers.Models
 {
     public class Filme
     {
-        public Filme(string nome, string elenco, string diretor, string duracao, DateTime anoDeLancamento, string sinopse, double avaliacaoDosCriticos, double avaliacaoDosUsuarios, ETagFilme tag)
+        public Filme(string nome, string elenco, string diretor, string duracao, DateTime anoDeLancamento, string sinopse, double avaliacaoDosCriticos, double avaliacaoDosUsuarios, ETagFilme tag, string categoria, string? imagem)
         {
             Id = Guid.NewGuid();
             Nome = nome;
@@ -20,6 +21,8 @@ namespace CinePlayers.Models
             UsuariosQueFavoritaram = new List<Usuario>();
             UsuariosQueReagiram = new List<ReacoesFilme>();
             Sessoes = new List<Sessao>();
+            Categoria = categoria;
+            Imagem = imagem.IsNullOrEmpty() ? "https://via.placeholder.com/300x400?text=Movie" : imagem;
         }
 
         public Guid Id { get; private set; }
@@ -36,6 +39,8 @@ namespace CinePlayers.Models
         public List<ReacoesFilme> UsuariosQueReagiram { get; private set; }
         public List<AvaliacoesFilme> UsuariosQueAvaliaram { get; private set; }
         public List<Sessao> Sessoes { get; private set; }
+        public string Categoria { get; private set; }
+        public string? Imagem { get; private set; }
 
         public void Alterar(UpdateFilmeViewModel model)
         {

@@ -57,7 +57,7 @@ namespace CinePlayers.Controllers
             try
             {
                 var filme = new Filme(model.Nome, model.Elenco, model.Diretor, model.Duracao, model.AnoDeLancamento,
-                    model.Sinopse, model.AvaliacaoDosCriticos, model.AvaliacaoDosUsuarios, model.Tag);
+                    model.Sinopse, model.AvaliacaoDosCriticos, model.AvaliacaoDosUsuarios, model.Tag, model.Categoria, model.Imagem);
 
                 await _context.Filmes.AddAsync(filme);
                 await _context.SaveChangesAsync();

@@ -38,6 +38,12 @@ namespace CinePlayers.Data.Mappings
 
             builder.Property(x => x.Tag)
                 .IsRequired();
+
+            builder.Property(x => x.Categoria)
+                .IsRequired();
+
+            builder.Property(x => x.Imagem)
+                .IsRequired(false);
         }
     }
 }

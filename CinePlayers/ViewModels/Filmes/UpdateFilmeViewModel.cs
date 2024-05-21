@@ -13,5 +13,7 @@ namespace CinePlayers.ViewModels.Filmes
         public double AvaliacaoDosCriticos { get; set; }
         public double AvaliacaoDosUsuarios { get; set; }
         public ETagFilme Tag { get; set; }
+        public string Categoria { get; set; }
+        public string Imagem { get; set; }
     }
 }
