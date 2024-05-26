@@ -53,6 +53,8 @@ namespace CinePlayers.Models
             AvaliacaoDosCriticos = model.AvaliacaoDosCriticos;
             AvaliacaoDosUsuarios = model.AvaliacaoDosUsuarios;
             Tag = model.Tag;
+            Categoria = model.Categoria;
+            Imagem = model.Imagem;
         }
 
         public void AtualizarReacoesDosUsuarios(int likes, int dislikes)
