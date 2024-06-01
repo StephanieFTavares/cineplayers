@@ -302,7 +302,7 @@ namespace CinePlayers.Controllers
             {
                 var filme = await _context.Filmes
                     .Where(x => x.Tag == ETagFilme.Cartaz)
-                    .Take(6)
+                    .Take(10)
                     .ToListAsync();
 
                 if (filme is null)
