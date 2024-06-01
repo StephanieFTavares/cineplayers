@@ -141,7 +141,7 @@ namespace CinePlayers.Controllers
                 await _context.ReacoesFilmes.AddAsync(reacao);
                 await _context.SaveChangesAsync();
                 await AtualizarReacaoFilme(filme);
-                           
+
                 return Ok(new ResultViewModel<string>($"{filme.Nome} reagido com sucesso", null));
             }
             catch (Exception)
@@ -209,12 +209,110 @@ namespace CinePlayers.Controllers
                     Likes = likes,
                     Dislikes = dislikes
                 };
-                
+
                 return Ok(new ResultViewModel<GetMoviesReactionViewModel>(result));
             }
             catch (Exception)
             {
                 return StatusCode(500, new ResultViewModel<Filme>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpGet("Lancamentos")]
+        public async Task<IActionResult> GetByReleaseAsync()
+        {
+            try
+            {
+                var filme = await _context.Filmes.OrderByDescending(x => x.AnoDeLancamento).Take(6).ToListAsync();
+
+                if (filme is null)
+                    return NotFound(new ResultViewModel<List<Filme>>("Conteúdo não encontrado"));
+
+                return Ok(new ResultViewModel<List<Filme>>(filme));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<List<Filme>>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpGet("MaisCurtidos")]
+        public async Task<IActionResult> GetByMoreLikesAsync()
+        {
+            try
+            {
+                var filmesMaisCurtidos = await _context.ReacoesFilmes
+                    .Where(x => x.Reacoes == EReacoesFilme.Like)
+                    .GroupBy(x => x.Filme)
+                    .Select(group => new
+                    {
+                        Filme = group.Key,
+                        Likes = group.Count()
+                    })
+                    .OrderByDescending(x => x.Likes)
+                    .Select(x => x.Filme)
+                    .Take(6) 
+                    .ToListAsync();
+
+                if (!filmesMaisCurtidos.Any())
+                    return NotFound(new ResultViewModel<string>("Nenhum filme curtido encontrado"));
+
+                return Ok(new ResultViewModel<List<Filme>>(filmesMaisCurtidos));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<List<Filme>>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpGet("Destaque")]
+        public async Task<IActionResult> GetBySpotlightAsync()
+        {
+            try
+            {
+                var filmesDestaque = await _context.ReacoesFilmes
+                    .Where(x => x.Reacoes == EReacoesFilme.Like)
+                    .GroupBy(x => x.Filme)
+                    .Select(group => new
+                    {
+                        Filme = group.Key,
+                        Likes = group.Count()
+                    })
+                    .OrderByDescending(x => x.Likes)
+                    .ThenByDescending(x => x.Filme.AnoDeLancamento)
+                    .Select(x => x.Filme)
+                    .Take(6) 
+                    .ToListAsync();
+
+                if (!filmesDestaque.Any())
+                    return NotFound(new ResultViewModel<string>("Nenhum filme curtido encontrado"));
+
+                return Ok(new ResultViewModel<List<Filme>>(filmesDestaque));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<List<Filme>>("Falha interna no servidor"));
+            }
+        }
+
+        [HttpGet("EmCartaz")]
+        public async Task<IActionResult> GetByOnDisplayAsync()
+        {
+            try
+            {
+                var filme = await _context.Filmes
+                    .Where(x => x.Tag == ETagFilme.Cartaz)
+                    .Take(6)
+                    .ToListAsync();
+
+                if (filme is null)
+                    return NotFound(new ResultViewModel<List<Filme>>("Conteúdo não encontrado"));
+
+                return Ok(new ResultViewModel<List<Filme>>(filme));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ResultViewModel<List<Filme>>("Falha interna no servidor"));
             }
         }
 
