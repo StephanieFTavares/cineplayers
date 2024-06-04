@@ -24,7 +24,7 @@ namespace CinePlayers.Controllers
         {
             try
             {
-                var filmes = await _context.Filmes.ToListAsync();
+                var filmes = await _context.Filmes.OrderBy(x => x.Nome).ToListAsync();
                 return Ok(new ResultViewModel<List<Filme>>(filmes));
             }
             catch (Exception)
