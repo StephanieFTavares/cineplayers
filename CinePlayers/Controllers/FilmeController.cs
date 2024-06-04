@@ -123,6 +123,7 @@ namespace CinePlayers.Controllers
                     .Usuarios
                     .Include(x => x.FilmesFavoritos)
                     .Include(x => x.FilmesReagidos)
+                        .ThenInclude(x => x.Filme)
                     .Include(x => x.FilmesAvaliados)
                     .FirstOrDefaultAsync(x => x.Id == idUsuario);
 
